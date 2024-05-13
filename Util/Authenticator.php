@@ -29,7 +29,6 @@ class Authenticator{
         if (isset($_POST['username'])){
             $username = $_POST['username'];
             $password = $_POST['password'];
-
             //Verifica se le credenziali sono corrette
             $row = UserRepository::userAuthentication($username, $password);
             //Se non sono valide ritorna false

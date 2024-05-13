@@ -1,10 +1,10 @@
-<?php $this->layout('home', ['titolo' => 'Todo List Authenticator']) ?>
+<?php $this->layout('home', ['titolo' => 'Esempio CRUD - login']) ?>
 
 <h1>Login</h1>
 <?php if(isset($login_fallito)):?>
-    <div class="toast toast-error">
-        Credenziali non corrette, riprova.
-    </div>
+<div class="toast toast-error">
+    Credenziali non corrette, riprova.
+</div>
 <?php endif; ?>
 <form class="form" action="index.php" method="post">
     <div class="form-group">
