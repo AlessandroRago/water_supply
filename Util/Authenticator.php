@@ -43,6 +43,27 @@ class Authenticator{
                 return null;
         return $_SESSION['user'];
     }
+    public static function getUserByEmail():array|null{
+        self::start();
+        //Controllo se è in corso un tentativo di login
+        //verificando la presenza dello username spedito tramite POST
+        if (isset($_POST['email'])){
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            //Verifica se le credenziali sono corrette
+            $row = UserRepository::userAuthenticationMail($email, $password);
+            //Se non sono valide ritorna false
+            if ($row != null) {
+                //Memorizza nelle variabili di sessione tutti gli
+                //attributi di un utente, ritornati dalla funzione precedente
+                $_SESSION['user'] = $row;
+            }
+        }
+        //Se non è attiva una sessione ritorna falso
+        if (!isset($_SESSION['user']))
+            return null;
+        return $_SESSION['user'];
+    }
 
     public static function logout()
     {

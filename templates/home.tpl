@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title><?=$this->e($titolo)?></title>
 </head>
 <body>
-<div class="container grid-lg">
+<div > <!-- class="container grid-lg" -->
 <!--Questa parte sarà sempre così e serve a includere
 il template che contiene il contenuto vero e proprio-->
 <?=$this->section('content')?>
