@@ -15,7 +15,6 @@ if ($user == null){
 }
 
 $displayed_name = $user['nome'];
-
 if (isset($_GET['action'])){
     if (($_GET['action']) == 'logout'){
         Authenticator::logout();

@@ -14,7 +14,7 @@
 <div class="toast toast-error">
     Credenziali non corrette, riprova.
 </div>
-<?php endif; ?>
+<?php endif;?>
 <!--
   Heads up! 👋
 
