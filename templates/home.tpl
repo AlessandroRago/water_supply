@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
     <title>Water Supply</title>
     <style>
         h2 {
@@ -74,6 +77,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
     </style>
+
+
     <script>
         function toggleChatbot() {
             const chatbot = document.getElementById('chatbot');
@@ -124,6 +129,22 @@
     </script>
 </head>
 <body class="bg-white text-blue-900">
+<header class="navbar  bg-blue-100 w-full">
+    <section class="navbar-section">
+
+    </section>
+
+    <section class="navbar-section">
+        <span class="label label-rounded label-primary m-2">
+            Hello <?=$displayed_name?>
+        </span>
+        <button class="btn btn-action tooltip tooltip-bottom" data-tooltip="Logout">
+            <a href="index.php?action=logout">
+                <i class="icon icon-share"></i>
+            </a>
+        </button>
+    </section>
+</header>
 <div class="w-full">
     <header class="text-center py-5 bg-blue-100 w-full">
         <h1 class="text-3xl font-bold">Water Supply Management in America</h1>

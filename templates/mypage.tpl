@@ -11,7 +11,6 @@
 ?>
 
 <?php $this->layout('home', ['titolo' => 'Esempio autenticazione']) ?>
-
 <header class="navbar">
     <section class="navbar-section">
 
