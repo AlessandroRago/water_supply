@@ -55,7 +55,7 @@
 
     <form action="index.php?action=survey" method="post" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
         <?php foreach($domande as $domanda): ?>
-        <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><?= $domanda['testo'] ?></label>
+        <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 "><?= $domanda['testo'] ?></label>
         <?php if($domanda['is_int']): ?>
         <div class="relative mb-6">
 

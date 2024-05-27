@@ -5,6 +5,7 @@
     "license": "GPL-2.0-only",
     "require": {
         "league/plates": "^3.5",
+        "phpmailer/phpmailer": "^6.9",
         "ext-pdo": "*"
     },
     "autoload": {

@@ -5,6 +5,8 @@ require_once 'conf/config.php';
 
 use League\Plates\Engine;
 use Util\Authenticator;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 function page_refresh(){
     echo "<meta http-equiv='refresh' content='0;url=index.php'>";
     exit;
@@ -31,8 +33,27 @@ if (isset($_GET['action'])){
 if (isset($_GET['action'])){
     if (($_GET['action']) == 'survey'){
         \Model\UserRepository::retrieveAnswers($user);
+        sendConfirmationEmail($user['email'], $user['nome']);
         page_refresh();
     }
+}
+
+function sendConfirmationEmail($toEmail, $toName) {
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+    $mail->SMTPDebug = SMTP::DEBUG_OFF;  // Impostare a DEBUG_OFF per l'uso in produzione
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 465;
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->SMTPAuth = true;
+    $mail->Username = 'safehydrations@gmail.com';
+    $mail->Password = 'xxxxxxxxxxx';  // Sostituire con la password corretta
+    $mail->setFrom('safehydrations@gmail.com', 'Pip Pop');
+    $mail->addReplyTo('safehydrations@gmail.com', 'Pip Pop');
+    $mail->addAddress($toEmail, $toName);
+    $mail->Subject = 'Partecipazione sondaggio';
+    $mail->Body = 'Grazie per aver partecipato al nostro sondaggio!';
+    $mail->send();
 }
 \Model\UserRepository::checkUser($user, $template);
 
