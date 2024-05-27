@@ -40,43 +40,45 @@
     </section>
 </header>
 
-<form action="index.php" method="post">
 
-<?php foreach($domande as $domanda): ?>
-    <?= $domanda['testo'] ?>
-<?php if($domanda['is_int']): ?>
-    <input type="number" name="<?=$domanda['id']?>">
-    <?php else: ?>
-    <input type="text" name="<?=$domanda['id']?>">
-    <?php endif; ?>
-    <br>
-<?php endforeach; ?>
-<input type="submit">
-</form>
-<!--
-  Heads up! 👋
-
-  Plugins:
-    - @tailwindcss/forms
--->
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg text-center">
-        <h1 class="text-2xl font-bold sm:text-3xl">Get started today!</h1>
+        <h1 class="text-2xl font-bold sm:text-3xl">Welcome to this survey!</h1>
 
         <p class="mt-4 text-gray-500">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
-            ipsa culpa autem, at itaque nostrum!
+            In this survey you'll have to answer a series of questions about the water supply in your country.
+            Your help is fundamental for the realization of this project.
+            Thank you for your participation
         </p>
     </div>
 
     <form action="index.php?action=survey" method="post" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
         <?php foreach($domande as $domanda): ?>
-        <p class="mt-4 text-gray-500">
-            <?= $domanda['testo'] ?>
-        </p>
+        <label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"><?= $domanda['testo'] ?></label>
         <?php if($domanda['is_int']): ?>
+        <div class="relative mb-6">
 
+            <input
+                    id="steps-range"
+                    type="range"
+                    min="1"
+                    max="7"
+                    value="4"
+                    step="1"
+                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                    name="<?=$domanda['id']?>"
+                    required
+            >
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min 1</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/4 -translate-x-9 rtl:translate-x-1/2 -bottom-6">2</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">3</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">4</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">5</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-3/4 translate-x-7 rtl:translate-x-1/2 -bottom-6">6</span>
+            <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max 7</span>
+        </div>
+<!--
         <div class="relative">
             <input
                     type="number"
@@ -88,15 +90,17 @@
             <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
         </span>
         </div>
-
+-->
 
         <?php else: ?>
+
         <div class="relative">
             <input
                     type="text"
                     class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                     placeholder="Enter your answer"
                     name="<?=$domanda['id']?>"
+                    required
             />
 
             <span class="absolute inset-y-0 end-0 grid place-content-center px-4">

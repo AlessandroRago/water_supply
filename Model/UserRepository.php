@@ -83,7 +83,7 @@ class UserRepository
         $pdo = Connection::getInstance();
         for ($i = 1; $i <= 10; $i++) {
         $answer = $_POST[''.$i];
-            if (is_int($answer)) {
+            if (is_numeric($answer)) {
                 $sql = 'INSERT INTO risposta (ris_int, utente_fk, domanda_fk)
         VALUES (:ris, :user,:domanda)';
             }
