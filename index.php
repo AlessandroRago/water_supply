@@ -47,7 +47,7 @@ function sendConfirmationEmail($toEmail, $toName) {
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->SMTPAuth = true;
     $mail->Username = 'safehydrations@gmail.com';
-    $mail->Password = 'xxxxxxxxxxx';  // Sostituire con la password corretta
+    $mail->Password = 'djxp efmb jdpv dacq';  // Sostituire con la password corretta
     $mail->setFrom('safehydrations@gmail.com', 'Pip Pop');
     $mail->addReplyTo('safehydrations@gmail.com', 'Pip Pop');
     $mail->addAddress($toEmail, $toName);

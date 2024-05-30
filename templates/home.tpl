@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="../style.css">
     <title>Water Supply</title>
     <style>
         h2 {
@@ -129,6 +130,7 @@
     </script>
 </head>
 <body class="bg-white text-blue-900">
+<div id="animated-element">
 <header class="navbar  bg-blue-100 w-full">
     <section class="navbar-section">
 
@@ -196,6 +198,7 @@
     </div>
     <input id="chatbot-input" type="text" onkeypress="handleChatbotInput(event)" placeholder="Type your message here...">
 </div>
-
+</div>
+<script src="../script.js"></script>
 </body>
 </html>

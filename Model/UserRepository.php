@@ -38,6 +38,7 @@ class UserRepository
         );
         //Non esiste un utente con quello username nel database
         if($stmt->rowCount() == 0)
+
             return null;
         //Recupera i dati dell'utente
         $row = $stmt->fetch();

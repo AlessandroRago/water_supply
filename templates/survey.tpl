@@ -19,10 +19,12 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
 </head>
 <body>
+<div id="animated-element">
 <header class="navbar">
     <section class="navbar-section">
 
@@ -120,6 +122,8 @@
 
     </form>
 </div>
+</div>
+<script src="../script.js"></script>
 </body>
 </html>
 
