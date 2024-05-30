@@ -100,4 +100,17 @@ class UserRepository
             ]);
         }
     }
+
+    public static function retrieveAnswer(): array|null
+    {
+        $pdo = Connection::getInstance();
+        $sql = 'SELECT domanda_fk, ris_int, COUNT(*) AS response_count
+                FROM risposta
+                WHERE ris_int IS NOT NULL
+                GROUP BY domanda_fk, ris_int
+                ORDER BY domanda_fk, ris_int';
+        $stmt = $pdo->query($sql);
+        $risposta = $stmt->fetchAll();
+        return $risposta;
+    }
 }

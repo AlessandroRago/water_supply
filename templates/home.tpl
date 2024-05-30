@@ -4,12 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite/dist/flowbite.bundle.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <script type="text/javascript">
+        // Assicurati che i dati siano correttamente codificati in JSON
+    </script>
     <link rel="stylesheet" href="../style.css">
     <title>Water Supply</title>
     <style>
+        canvas {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);  /* Ombra sottile per un effetto di profondità */
+        border: 1px solid #e3e3e3;                 /* Bordo sottile per definire i limiti del grafico */
+        border-radius: 8px;                        /* Angoli arrotondati */
+        background-color: #fff;                    /* Sfondo bianco per una migliore leggibilità */
+        padding: 10px;                             /* Padding intorno al grafico */
+        margin-top: 20px;
+        }
         h2 {
             color: #1E40AF; /* Blu più scuro */
         }
@@ -77,60 +91,20 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        /* Modifica delle dimensioni del font per le descrizioni */
+        p {
+            font-size: 1.2rem; /* Aumenta il font size a 1.2rem per le descrizioni */
+        }
     </style>
-
-
-    <script>
-        function toggleChatbot() {
-            const chatbot = document.getElementById('chatbot');
-            chatbot.style.display = chatbot.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function addChatbotMessage(message, sender) {
-            const messages = document.getElementById('chatbot-messages');
-            const messageElement = document.createElement('div');
-            messageElement.textContent = message;
-            messageElement.className = sender === 'user' ? 'text-right' : 'text-left';
-            messages.appendChild(messageElement);
-            messages.scrollTop = messages.scrollHeight;
-        }
-
-        function handleChatbotInput(event) {
-            if (event.key === 'Enter') {
-                const input = document.getElementById('chatbot-input');
-                const userMessage = input.value;
-                addChatbotMessage(userMessage, 'user');
-                input.value = '';
-                getChatbotResponse(userMessage);
-            }
-        }
-
-        function handleQuestionClick(question) {
-            addChatbotMessage(question, 'user');
-            getChatbotResponse(question);
-        }
-
-        function getChatbotResponse(userMessage) {
-            const responses = {
-                "What is the EPA?": "The Environmental Protection Agency (EPA) is a U.S. federal agency that enforces regulations to protect the environment and public health.",
-                "What does the Clean Water Act do?": "The Clean Water Act (CWA) aims to restore and maintain the integrity of the nation's waters through regulatory measures.",
-                "What happened in Flint, Michigan?": "The Flint water crisis was a public health crisis that started in 2014 when the drinking water source for the city of Flint, Michigan was contaminated with lead."
-            };
-
-            if (responses[userMessage]) {
-                setTimeout(() => {
-                    addChatbotMessage(responses[userMessage], 'bot');
-                }, 500);
-            } else {
-                setTimeout(() => {
-                    addChatbotMessage("I'm sorry, I don't understand the question.", 'bot');
-                }, 500);
-            }
-        }
-    </script>
+    <?php
+    require_once 'Model/UserRepository.php';
+    $data = \Model\UserRepository::retrieveAnswer();
+    $jsonData = json_encode($data);
+    echo "<script>var graphData = $jsonData;</script>";
+    ?>
 </head>
 <body class="bg-white text-blue-900">
-<div id="animated-element">
 <header class="navbar  bg-blue-100 w-full">
     <section class="navbar-section">
 
@@ -160,8 +134,7 @@
             </section>
             <section class="my-6 text-center">
                 <h2 class="text-2xl font-semibold">Political Influence</h2>
-                <p>Under Democratic administrations, the EPA tends to enforce stricter regulations, while Republican administrations often prioritize deregulation to reduce the business burden.
-                    Republicans argue that reducing regulations fosters economic growth and reduces costs for businesses.</p>
+                <p>Under Democratic administrations, the EPA tends to enforce stricter regulations, while Republican administrations often prioritize deregulation to reduce the business burden. Republicans argue that reducing regulations fosters economic growth and reduces costs for businesses.</p>
             </section>
             <section class="my-6 text-center">
                 <h2 class="text-2xl font-semibold">Drinking Water Infrastructure</h2>
@@ -176,8 +149,106 @@
                 <p>The aging infrastructure poses ongoing risks, exemplified by the Flint, Michigan crisis, underscoring the need for comprehensive reforms and investments.</p>
             </section>
             <section class="my-6 text-center">
-                <h2 class="text-2xl font-semibold">Data and Graphs</h2>
-                <p>This section will display various graphs and data related to water supply management.</p>
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">How many hours per day do you have access to water?</h2>
+                        <p>Explore data on water access duration.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">How satisfied are you with the quality of your water supply? (1-10)</h2>
+                        <p>Assess satisfaction levels with water quality.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">How often do you experience interruptions in your water supply? (times per week)</h2>
+                        <p>Frequency of water supply interruptions.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">On a scale of 1 to 10, how would you rate the taste of your tap water?</h2>
+                        <p>Evaluate the taste quality of tap water.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart4"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">Do you use any filtration system for your drinking water?</h2>
+                        <p>Usage of filtration systems for drinking water.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart5"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">How much do you pay for water per month? (in currency)</h2>
+                        <p>Monthly expenses on water supply.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart6"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">How often do you receive your water bill? (times per year)</h2>
+                        <p>Frequency of receiving water bills annually.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart7"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">What is the main source of your water supply?</h2>
+                        <p>Main sources of water supply.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart8"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">Have you experienced any water contamination issues in the past year?</h2>
+                        <p>Incidence of water contamination issues.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart9"></canvas>
+                    </div>
+                </section>
+
+                <section class="my-6 flex flex-wrap items-center justify-between">
+                    <div class="w-full md:w-1/2 p-4">
+                        <h2 class="text-2xl font-semibold">What improvements would you like to see in your water supply system?</h2>
+                        <p>Desired improvements in water supply systems.</p>
+                    </div>
+                    <div class="w-full md:w-1/2 p-4">
+                        <canvas id="chart10"></canvas>
+                    </div>
+                </section>
+
             </section>
         </main>
     </div>
@@ -198,6 +269,73 @@
     </div>
     <input id="chatbot-input" type="text" onkeypress="handleChatbotInput(event)" placeholder="Type your message here...">
 </div>
+<script>
+    // Assumiamo che 'graphData' sia l'oggetto che hai caricato.
+    const groupedData = [];
+
+    // Raggruppare i dati per domanda_fk
+    Object.values(graphData).forEach(item => {
+        const fk = item.domanda_fk;
+        if (!groupedData[fk]) {
+            groupedData[fk] = [];
+        }
+        groupedData[fk].push({ x: item.ris_int, y: item.response_count });
+    });
+
+    // Utilizzare Chart.js per creare i grafici
+    Object.entries(groupedData).forEach(([key, data]) => {
+        const ctx = document.getElementById('chart' + key).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',  // Puoi cambiare il tipo di grafico qui, 'bar' per le barre, 'line' per lineare, ecc.
+            data: {
+                datasets: [{
+                    label: 'Numero di risposte per la domanda ' + key,
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Colore di sfondo delle barre
+                    borderColor: 'rgba(75, 192, 192, 1)',        // Colore del bordo delle barre
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        ticks: {
+                            stepSize: 1,  // Assicurati che l'incremento sia di 1 per mostrare solo interi
+                            beginAtZero: true
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0  // Impedisce la visualizzazione di numeri decimali
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',  // Posiziona la legenda sopra il grafico
+                        labels: {
+                            font: {
+                                size: 14  // Dimensione del font per la legenda
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: false,
+                        bodyFont: {
+                            size: 14  // Dimensione del font per i tooltip
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
 </div>
 <script src="../script.js"></script>
 </body>
