@@ -11,17 +11,16 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
     <script type="text/javascript">
-        // Assicurati che i dati siano correttamente codificati in JSON
     </script>
     <link rel="stylesheet" href="../style.css">
     <title>Water Supply</title>
     <style>
         canvas {
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);  /* Ombra sottile per un effetto di profondità */
-        border: 1px solid #e3e3e3;                 /* Bordo sottile per definire i limiti del grafico */
-        border-radius: 8px;                        /* Angoli arrotondati */
-        background-color: #fff;                    /* Sfondo bianco per una migliore leggibilità */
-        padding: 10px;                             /* Padding intorno al grafico */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e3e3e3;
+        border-radius: 8px;
+        background-color: #fff;
+        padding: 10px;
         margin-top: 20px;
         }
         h2 {
@@ -92,11 +91,58 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        /* Modifica delle dimensioni del font per le descrizioni */
         p {
-            font-size: 1.2rem; /* Aumenta il font size a 1.2rem per le descrizioni */
+            font-size: 1.2rem;
         }
     </style>
+    <script>
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            chatbot.style.display = chatbot.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addChatbotMessage(message, sender) {
+            const messages = document.getElementById('chatbot-messages');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            messageElement.className = sender === 'user' ? 'text-right' : 'text-left';
+            messages.appendChild(messageElement);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function handleChatbotInput(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('chatbot-input');
+                const userMessage = input.value;
+                addChatbotMessage(userMessage, 'user');
+                input.value = '';
+                getChatbotResponse(userMessage);
+            }
+        }
+
+        function handleQuestionClick(question) {
+            addChatbotMessage(question, 'user');
+            getChatbotResponse(question);
+        }
+
+        function getChatbotResponse(userMessage) {
+            const responses = {
+                "What is the EPA?": "The Environmental Protection Agency (EPA) is a U.S. federal agency that enforces regulations to protect the environment and public health.",
+                "What does the Clean Water Act do?": "The Clean Water Act (CWA) aims to restore and maintain the integrity of the nation's waters through regulatory measures.",
+                "What happened in Flint, Michigan?": "The Flint water crisis was a public health crisis that started in 2014 when the drinking water source for the city of Flint, Michigan was contaminated with lead."
+            };
+
+            if (responses[userMessage]) {
+                setTimeout(() => {
+                    addChatbotMessage(responses[userMessage], 'bot');
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    addChatbotMessage("I'm sorry, I don't understand the question.", 'bot');
+                }, 500);
+            }
+        }
+    </script>
     <?php
     require_once 'Model/UserRepository.php';
     $data = \Model\UserRepository::retrieveAnswer();
@@ -105,6 +151,7 @@
     ?>
 </head>
 <body class="bg-white text-blue-900">
+<div id="animated-element">
 <header class="navbar  bg-blue-100 w-full">
     <section class="navbar-section">
 
@@ -161,7 +208,7 @@
 
                 <section class="my-6 flex flex-wrap items-center justify-between">
                     <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">How satisfied are you with the quality of your water supply? (1-10)</h2>
+                        <h2 class="text-2xl font-semibold">How satisfied are you with the quality of your water supply? (1-7)</h2>
                         <p>Assess satisfaction levels with water quality.</p>
                     </div>
                     <div class="w-full md:w-1/2 p-4">
@@ -181,7 +228,7 @@
 
                 <section class="my-6 flex flex-wrap items-center justify-between">
                     <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">On a scale of 1 to 10, how would you rate the taste of your tap water?</h2>
+                        <h2 class="text-2xl font-semibold">On a scale of 1 to 7, how would you rate the taste of your tap water?</h2>
                         <p>Evaluate the taste quality of tap water.</p>
                     </div>
                     <div class="w-full md:w-1/2 p-4">
@@ -191,17 +238,7 @@
 
                 <section class="my-6 flex flex-wrap items-center justify-between">
                     <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">Do you use any filtration system for your drinking water?</h2>
-                        <p>Usage of filtration systems for drinking water.</p>
-                    </div>
-                    <div class="w-full md:w-1/2 p-4">
-                        <canvas id="chart5"></canvas>
-                    </div>
-                </section>
-
-                <section class="my-6 flex flex-wrap items-center justify-between">
-                    <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">How much do you pay for water per month? (in currency)</h2>
+                        <h2 class="text-2xl font-semibold">How would you rate on a scale of 1 to 7 the price-quality ratio of your water supply?</h2>
                         <p>Monthly expenses on water supply.</p>
                     </div>
                     <div class="w-full md:w-1/2 p-4">
@@ -211,41 +248,11 @@
 
                 <section class="my-6 flex flex-wrap items-center justify-between">
                     <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">How often do you receive your water bill? (times per year)</h2>
-                        <p>Frequency of receiving water bills annually.</p>
+                        <h2 class="text-2xl font-semibold">How would you rate the safety of your water supply? (1-7)</h2>
+                        <p>Evaluate the safety of your water supply in terms of contaminants and pollutants.</p>
                     </div>
                     <div class="w-full md:w-1/2 p-4">
                         <canvas id="chart7"></canvas>
-                    </div>
-                </section>
-
-                <section class="my-6 flex flex-wrap items-center justify-between">
-                    <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">What is the main source of your water supply?</h2>
-                        <p>Main sources of water supply.</p>
-                    </div>
-                    <div class="w-full md:w-1/2 p-4">
-                        <canvas id="chart8"></canvas>
-                    </div>
-                </section>
-
-                <section class="my-6 flex flex-wrap items-center justify-between">
-                    <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">Have you experienced any water contamination issues in the past year?</h2>
-                        <p>Incidence of water contamination issues.</p>
-                    </div>
-                    <div class="w-full md:w-1/2 p-4">
-                        <canvas id="chart9"></canvas>
-                    </div>
-                </section>
-
-                <section class="my-6 flex flex-wrap items-center justify-between">
-                    <div class="w-full md:w-1/2 p-4">
-                        <h2 class="text-2xl font-semibold">What improvements would you like to see in your water supply system?</h2>
-                        <p>Desired improvements in water supply systems.</p>
-                    </div>
-                    <div class="w-full md:w-1/2 p-4">
-                        <canvas id="chart10"></canvas>
                     </div>
                 </section>
 
@@ -257,7 +264,6 @@
     </footer>
 </div>
 
-<!-- Floating Chatbot Button and Chatbox -->
 <button id="chatbot-button" onclick="toggleChatbot()">💬</button>
 <div id="chatbot">
     <div id="chatbot-header">Chat with us!</div>
@@ -269,11 +275,10 @@
     </div>
     <input id="chatbot-input" type="text" onkeypress="handleChatbotInput(event)" placeholder="Type your message here...">
 </div>
+</div>
 <script>
-    // Assumiamo che 'graphData' sia l'oggetto che hai caricato.
     const groupedData = [];
 
-    // Raggruppare i dati per domanda_fk
     Object.values(graphData).forEach(item => {
         const fk = item.domanda_fk;
         if (!groupedData[fk]) {
@@ -282,17 +287,16 @@
         groupedData[fk].push({ x: item.ris_int, y: item.response_count });
     });
 
-    // Utilizzare Chart.js per creare i grafici
     Object.entries(groupedData).forEach(([key, data]) => {
         const ctx = document.getElementById('chart' + key).getContext('2d');
         new Chart(ctx, {
-            type: 'bar',  // Puoi cambiare il tipo di grafico qui, 'bar' per le barre, 'line' per lineare, ecc.
+            type: 'bar',
             data: {
                 datasets: [{
-                    label: 'Numero di risposte per la domanda ' + key,
+                    label: 'Number of responses for question ' + key,
                     data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Colore di sfondo delle barre
-                    borderColor: 'rgba(75, 192, 192, 1)',        // Colore del bordo delle barre
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }]
             },
@@ -302,24 +306,30 @@
                     x: {
                         type: 'linear',
                         position: 'bottom',
+                        min: 1,
+                        max: 7,
                         ticks: {
-                            stepSize: 1,  // Assicurati che l'incremento sia di 1 per mostrare solo interi
-                            beginAtZero: true
+                            stepSize: 1,
+                            callback: function(value, index, values) {
+                                if (Math.floor(value) === value) {
+                                    return value;
+                                }
+                            }
                         }
                     },
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            precision: 0  // Impedisce la visualizzazione di numeri decimali
+                            precision: 0
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        position: 'top',  // Posiziona la legenda sopra il grafico
+                        position: 'top',
                         labels: {
                             font: {
-                                size: 14  // Dimensione del font per la legenda
+                                size: 14
                             }
                         }
                     },
@@ -328,15 +338,22 @@
                         mode: 'index',
                         intersect: false,
                         bodyFont: {
-                            size: 14  // Dimensione del font per i tooltip
+                            size: 14
                         }
+                    }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuart',
+                    onComplete: function() {
+                        console.log('Animation complete!');
                     }
                 }
             }
         });
     });
+
 </script>
-</div>
 <script src="../script.js"></script>
 </body>
 </html>

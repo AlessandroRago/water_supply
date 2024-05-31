@@ -42,13 +42,13 @@ if (isset($_GET['action'])){
 function sendConfirmationEmail($toEmail, $toName) {
     $mail = new PHPMailer();
     $mail->isSMTP();
-    $mail->SMTPDebug = SMTP::DEBUG_OFF;  // Impostare a DEBUG_OFF per l'uso in produzione
+    $mail->SMTPDebug = SMTP::DEBUG_OFF;
     $mail->Host = 'smtp.gmail.com';
     $mail->Port = 465;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->SMTPAuth = true;
     $mail->Username = 'safehydrations@gmail.com';
-    $mail->Password = 'djxp efmb jdpv dacq';  // Sostituire con la password corretta
+    $mail->Password = 'xxxx';  // Sostituire con la password corretta
     $mail->setFrom('safehydrations@gmail.com', 'Pip Pop');
     $mail->addReplyTo('safehydrations@gmail.com', 'Pip Pop');
     $mail->addAddress($toEmail, $toName);
